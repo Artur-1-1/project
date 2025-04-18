@@ -1,0 +1,33 @@
+import os
+#1
+films = "film 1, fim 2, film 3"
+with open("text.txt", "w") as file:
+    file.write(films)
+    print("Фільми записані у файл")
+
+with open("write.txt", "r") as file:
+    text = file.readline()
+    print(text)
+#2
+#я не зрозумів як вивести данні
+with open("quotes.txt","r") as file:
+    text = file.readline()
+    if "щастя" in text:
+        print("gfhdh")
+#3
+if not os.path.exists("my_folder"):
+    os.makedirs("my_folder/sub_folder")  
+check = os.listdir("my_folder")
+print(check)
+#4
+size = os.path.getsize("data.txt")
+if size <= 1024:
+    print(size)
+else:
+    print("Файл занадто великий")
+#5
+#теж не зрозумів
+import os
+tempfile = []
+tempfile= os.listdir("temp_data")
+os.remove(tempfile)   
