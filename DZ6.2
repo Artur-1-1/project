@@ -1,0 +1,24 @@
+import sqlite3
+conn = sqlite3.connect('my_database1.db')
+cursor = conn.cursor()
+
+# Створення таблиці (якщо її ще немає)
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS library (
+
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+title TEXT,
+author TEXT,
+year INTEGER
+)
+''')
+
+cursor.execute("INSERT INTO library (title, author, year) VALUES ('Ivan Franko', 'Zahar Berkut', 1883)")
+cursor.execute("INSERT INTO library (title, author, year) VALUES ('Taras Shevchenko', 'Kobzar', 1840)")
+cursor.execute("INSERT INTO library (title, author, year) VALUES ('Marusya Churay', 'Lina Kostenko', 1979)")
+
+cursor.execute("SELECT * FROM library")
+print(cursor.fetchall()) # Вивести всі записи з таблиці
+
+# Закриття з'єднання
+conn.close() 
