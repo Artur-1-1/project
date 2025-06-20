@@ -1,0 +1,32 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+recipes_list = [
+    {"name": "Овсяна каша з фруктами", "type": "breakfast", "difficulty": "easy"},
+    {"name": "Яєчня з помідорами", "type": "breakfast", "difficulty": "medium"},
+    {"name": "Сирники з родзинками", "type": "breakfast", "difficulty": "hard"},
+    {"name": "Борщ червоний", "type": "lunch", "difficulty": "medium"},
+    {"name": "Гречка з куркою", "type": "lunch", "difficulty": "easy"},
+    {"name": "Пельмені домашні", "type": "lunch", "difficulty": "hard"},
+    {"name": "Овочевий салат", "type": "dinner", "difficulty": "easy"},
+    {"name": "Запечена риба з овочами", "type": "dinner", "difficulty": "medium"},
+    {"name": "Лазанья з м’ясом", "type": "dinner", "difficulty": "hard"},
+]
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    recipes = recipes_list
+    if request.method == "POST":
+        filter_type = request.form.get("filter_type")
+        filter_difficulty = request.form.get("filter_difficulty")
+
+        if filter_type:
+            recipes = [r for r in recipes if r["type"] == filter_type]
+        if filter_difficulty:
+            recipes = [r for r in recipes if r["difficulty"] == filter_difficulty]
+
+    return render_template("reciepes.html", recipes=recipes)
+
+if __name__ == "__main__":
+    app.run(debug=True)
