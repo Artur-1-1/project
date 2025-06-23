@@ -1,0 +1,17 @@
+from flask import Flask, session, render_template
+app = Flask(__name__)
+app.secret_key = "секретний_ключ"
+
+@app.route("/")
+def home():
+    if "clicks" not in session:
+        session["clicks"] = 0
+    return render_template("clicker_game_server.html", clicks=session["clicks"])
+
+@app.route("/click")
+def click():
+    session["clicks"] += 1
+    return home()
+
+if __name__ == "__main__":
+    app.run(debug=True)
