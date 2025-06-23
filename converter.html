@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="container">
+        <button><a href="/info">Дізнатися більше</a></button>
+        <h2>Конвертер одиниць</h2>
+        <form method="post">
+            <input type="number" name="value" placeholder="Введи число" required step="any" />
+            
+            <select name="from_unit">
+                <option value="cm">Сантиметри</option>
+                <option value="m">Метри</option>
+                <option value="km">Кілометри</option>
+                <option value="inch">Дюйми</option>
+                <option value="foot">Фути</option>
+                <option value="kg">кілограми</option>
+                <option value="g">грами</option>
+                <option value="mg">міліграми</option>
+                <option value="l">Літри</option>
+                <option value="ml">Мілілітри</option>
+            </select>
+
+            <select name="to_unit">
+                <option value="cm">Сантиметри</option>
+                <option value="m">Метри</option>
+                <option value="km">Кілометри</option>
+                <option value="inch">Дюйми</option>
+                <option value="foot">Фути</option>
+                <option value="kg">кілограми</option>
+                <option value="g">грами</option>
+                <option value="mg">міліграми</option>
+                <option value="l">Літри</option>
+                <option value="ml">Мілілітри</option>
+            </select>
+
+            <button type="submit">Конвертувати</button>
+        </form>
+
+        {% if result is not none %}
+        <h3>Результат: {{ result }}</h3>
+        {% endif %}
+    </div>
+</body>
+</html>
