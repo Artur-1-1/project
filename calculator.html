@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calcuator</title>
+</head>
+<body>
+    <form method="POST">
+        <label for="user_input">Введіть вираз:</label>
+        <input type="text" name="user_input" id="user_input">
+        <button type="submit">Обчислити</button>
+    </form>
+    {% if result is not none %}
+        <h3>Результат: {{ result }}</h3>
+    {% endif %}
+</body>
+</html>
