@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="../static/Main_Project.css">
+</head>
+<body>
+  {% if Main_Project == "home" %}
+    <div class="sidebar">
+      <div>
+        <a href="/notes">📝 Нотатки</a>
+        <a href="/schedule">📅 Розклад</a>
+      </div>
+      <div class="sidebar-footer">
+        <p class="bottom">© 2025.</p> 
+        <p class="bottom1">Place of Progres.</p>
+        <p class="bottom2">Version 1.0</p>
+      </div>
+    </div>
+    <div class="main">
+  <!-- Ліва колонка з фактами та кнопками -->
+      <div class="content">
+        <h2>Сьогодні — {{ current_day }}</h2>
+        <p>❗️ Цікавий факт дня: {{ fact }}</p>
+      </div>
+      <div class="top-buttons">
+        <a href="/words">🧠 Слова</a>
+        <a href="/math">➕ Математика</a>
+        <a href="/library">📚 Бібліотека</a>
+      </div>
+    </div> 
+  <!-- Права колонка з розкладом -->
+    <div class="schedule-right">
+      <h3>📅 Розклад:</h3>
+      <div class="schedule-grid">
+        {% for day in ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Розклад дзвінків"] %}
+          {% set lessons = schedule.get(day, []) %}
+          <div class="day-card">
+            <strong>{{ day }}</strong>
+            {% if lessons %}
+              <ul>
+                {% for subject in lessons %}
+                  <li>{{ subject }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+              <p><em>(немає занять)</em></p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% elif Main_Project == "math_page" %}
+    <div class="sidebar">
+      <div>
+        <a href="/">🔙На головну</a>
+      </div>
+      <div class="sidebar-footer">
+        <p class="bottom">© 2025.</p> 
+        <p class="bottom1">Place of Progres.</p>
+        <p class="bottom2">Version 1.0</p>
+      </div>
+    </div>
+    <div class="main">
+        <div class="top-buttons">
+          <a href="/mathtest">📄Матиматиний тест</a>
+          <a href="/calculator">🧮Калькулятор</a>
+        </div>
+    </div>
+  {% elif Main_Project == "calculator_page" %}
+    <div class="sidebar">
+      <div>
+        <a href="/">🔙На головну</a>
+      </div>
+      <div class="sidebar-footer">
+        <p class="bottom">© 2025.</p> 
+        <p class="bottom1">Place of Progres.</p>
+        <p class="bottom2">Version 1.0</p>
+      </div>
+    </div>
+    <div class="main">
+      <div class="calculator">
+        <form method="POST">
+          <label for="user_input">Введіть вираз:</label>
+          <input type="text" name="user_input" id="user_input">
+          <button type="submit">Обчислити</button>
+        </form>
+        {% if result is not none %}
+          <h3>Результат: {{ result }}</h3>
+        {% endif %}
+        <div class="grid-calculator">
+          <h1>+ = +</h1>
+          <h1>- = -</h1>
+          <h1>× = *</h1>
+          <h1>÷ = /</h1>
+          <h1>^ = **</h1>
+          <h1>√ = sq</h1>
+        </div>
+      </div>
+    </div>
+  {% elif Main_Project == "math_start" %}
+    <div class="sidebar">
+      <div>
+        <a href="/">🔙На головну</a>
+      </div>
+      <div class="sidebar-footer">
+        <p class="bottom">© 2025.</p> 
+        <p class="bottom1">Place of Progres.</p>
+        <p class="bottom2">Version 1.0</p>
+      </div>
+    </div>
+    <div class="math-test-container">
+      <h2>🧪 Математичний тест</h2>
+      <form method="POST" action="/mathtest">
+        <label for="num_questions">Кількість питань:</label>
+        <input type="number" name="num_questions" value="5" min="1" max="50" class="input-field"><br><br>
+
+        <label for="difficulty">Складність:</label>
+        <select name="difficulty" class="input-field">
+          <option value="easy">Легкий</option>
+          <option value="medium">Середній</option>
+          <option value="hard">Складний</option>
+        </select><br><br>
+
+        <button type="submit" name="start_test" class="button">🎯 Розпочати тест</button>
+      </form>
+    </div>
+  {% elif Main_Project == "math_question" %}
+    <div class="sidebar">
+      <div>
+        <a href="/">🔙На головну</a>
+      </div>
+      <div class="sidebar-footer">
+        <p class="bottom">© 2025.</p> 
+        <p class="bottom1">Place of Progres.</p>
+        <p class="bottom2">Version 1.0</p>
+      </div>
+    </div>
+    <div class="math-test-container">
+      <h2>📘 Завдання {{ current }}/{{ total }}</h2>
+      <p class="math-question">Вираз: <strong>{{ expr }}</strong></p>
+      <form method="POST">
+        {% for ans in answers %}
+          <button type="submit" name="answer" value="{{ ans }}" class="answer-btn">{{ ans }}</button><br>
+        {% endfor %}
+      </form>
+    </div>
+  {% elif Main_Project == "math_result" %}
+  <div class="sidebar">
+      <div>
+        <a href="/">🔙На головну</a>
+      </div>
+      <div class="sidebar-footer">
+        <p class="bottom">© 2025.</p> 
+        <p class="bottom1">Place of Progres.</p>
+        <p class="bottom2">Version 1.0</p>
+      </div>
+    </div>
+    <div class="math-test-container">
+      <h2>🎉 Тест завершено!</h2>
+      <p>✅ Правильних відповідей: <strong>{{ score }}/{{ total }}</strong></p>
+      <a href="/" class="button">⬅️ На головну</a>
+      <a href="/mathtest" class="button">🔁 Повторити</a>
+    </div>
+  {% elif Main_Project == "notes_page" %}
+    <div class="main">
+      <div class="sidebar">
+          <div>
+            <a href="/">🔙На головну</a>
+          </div>
+          <div class="sidebar-footer">
+            <p class="bottom">© 2025.</p> 
+            <p class="bottom1">Place of Progres.</p>
+            <p class="bottom2">Version 1.0</p>
+          </div>
+        </div>
+      <h2>📓 Нотатки</h2>
+      {% if error %}
+        <p style="color: red;">{{ error }}</p>
+      {% endif %}
+      <form method="POST">
+        <input type="text" name="title" placeholder="Заголовок" required><br>
+        <textarea name="content" placeholder="Текст нотатки" required></textarea><br>
+        <button type="submit">Додати нотатку</button>
+      </form>
+      <hr>
+      {% for note in notes %}
+        <div class="note">
+          <h3>{{ note.title }}</h3>
+          <p>{{ note.content }}</p>
+          <form method="POST" style="display:inline;">
+            <input type="hidden" name="delete_title" value="{{ note.title }}">
+            <button type="submit" style="color:red;">Видалити</button>
+          </form>
+          <hr>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif Main_Project == "schedule_edit" %}
+    <div class="sidebar">
+      <div>
+        <a href="/">🔙На головну</a>
+      </div>
+      <div class="sidebar-footer">
+        <p class="bottom">© 2025.</p> 
+        <p class="bottom1">Place of Progres.</p>
+        <p class="bottom2">Version 1.0</p>
+      </div>
+    </div>
+    <h2 style="margin-left: 800px;">Редагування розкладу</h2>
+    <form method="POST">
+     
+        {% for day in ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Розклад дзвінків"] %}
+          {% set lessons = schedule.get(day, []) %}
+            <div class="day-box">
+              <label for="{{ day }}"><strong>{{ day }}</strong></label><br>
+              <textarea name="{{ day }}" rows="5" cols="30">{{ lessons | join('\n') }}</textarea>
+            </div>
+        {% endfor %}
+        <div style="display: flex; justify-content: flex-end; margin-top: -1170px; height: 1170px;">
+          <button type="submit" class="save-button">💾 Зберегти зміни</button>
+        </div>
+      
+    </form>
+  {% elif Main_Project == "library" %}
+    <div class="main">
+      <div class="sidebar">
+        <div>
+          <a href="/">🔙На головну</a>
+        </div>
+        <div class="sidebar-footer">
+          <p class="bottom">© 2025.</p>
+          <p class="bottom1">Place of Progres.</p>
+          <p class="bottom2">Version 1.0</p>
+        </div>
+      </div>
+
+      <h2>Бібліотека</h2>
+      {% if error %}
+        <p style="color: red;">{{ error }}</p>
+      {% endif %}
+
+      <form method="POST">
+        <input type="text" name="name" placeholder="Назва книги" required><br>
+        <textarea name="author" placeholder="Автор або опис книги" required></textarea><br>
+        <button type="submit">Додати книгу</button>
+      </form>
+      <hr>
+
+      {% for book in books %}
+        <div class="note">
+          <h3>{{ book.name }}</h3>
+          <p>{{ book.author }}</p>
+          <form method="POST" style="display:inline;">
+            <input type="hidden" name="delete_title" value="{{ book.name }}">
+            <button type="submit" style="color:red;">Видалити</button>
+          </form>
+          <hr>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif Main_Project == "words_menu" %}
+    <div class="main">
+      <div class="sidebar">
+        <div>
+          <a href="/">🔙На головну</a>
+        </div>
+        <div class="sidebar-footer">
+          <p class="bottom">© 2025.</p>
+          <p class="bottom1">Place of Progres.</p>
+          <p class="bottom2">Version 1.0</p>
+        </div>
+      </div>
+      </div>
+    <div class="main">
+        <div class="top-buttons">
+          <a href="/words_dict">Словник</a>
+          <a href="/word_test_setup">Словниковий тест</a>
+        </div>
+    </div>
+  {% elif Main_Project == "words_dict" %}
+  <div class="main">
+    <div class="sidebar">
+      <div><a href="/">🔙На головну</a></div>
+      <div class="sidebar-footer">
+        <p class="bottom">© 2025.</p>
+        <p class="bottom1">Place of Progres.</p>
+        <p class="bottom2">Version 1.0</p>
+      </div>
+    </div>
+
+    <h2>🧠 Словник</h2>
+    {% if error %}
+      <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+      <input type="text" name="word" placeholder="Слово іноземною" required><br>
+      <input type="text" name="translation" placeholder="Переклад" required><br>
+      <textarea name="note" placeholder="Пояснення (необов'язково)"></textarea><br>
+      <button type="submit">Додати слово</button>
+    </form>
+
+    <hr>
+    {% for entry in words %}
+      <div class="note">
+        <h3>{{ entry.word }} → {{ entry.translation }}</h3>
+        {% if entry.note %}
+          <p><em>{{ entry.note }}</em></p>
+        {% endif %}
+        <form method="POST" style="display:inline;">
+          <input type="hidden" name="delete_title" value="{{ entry.word }}">
+          <button type="submit" style="color:red;">Видалити</button>
+        </form>
+        <hr>
+      </div>
+    {% endfor %}
+  </div>
+  {% elif Main_Project == "word_question" %}
+    <div class="main">
+      <div class="sidebar">
+        <div>
+          <a href="/">🔙На головну</a>
+        </div>
+        <div class="sidebar-footer">
+          <p class="bottom">© 2025.</p>
+          <p class="bottom1">Place of Progres.</p>
+          <p class="bottom2">Version 1.0</p>
+        </div>
+      </div>
+      <h2>Тест: {{ current }}/{{ total }}</h2>
+      <form method="POST">
+        <p><strong>Перекладіть:</strong> {{ question }}</p>
+        {% for opt in options %}
+          <button type="submit" name="answer" value="{{ opt }}">{{ opt }}</button><br><br>
+        {% endfor %}
+      </form>
+    </div>
+  {% elif Main_Project == "word_test_result" %}
+  <div class="main">
+    <div class="sidebar">
+        <div>
+          <a href="/">🔙На головну</a>
+        </div>
+        <div class="sidebar-footer">
+          <p class="bottom">© 2025.</p>
+          <p class="bottom1">Place of Progres.</p>
+          <p class="bottom2">Version 1.0</p>
+        </div>
+      </div>
+    <h2>Результати словникового тесту: {{ score }}/{{ total }}</h2>
+    <table class="result-table">
+      <tr>
+        <th>#</th>
+        <th>Запитання</th>
+        <th>Ваша відповідь</th>
+        <th>Правильна відповідь</th>
+      </tr>
+      {% for r in results %}
+      <tr class="{% if r['user'] == r['correct'] %}correct{% else %}incorrect{% endif %}">
+        <td>{{ loop.index }}</td>
+        <td>{{ r['question'] }}</td>
+        <td>{{ r['user'] }}</td>
+        <td>{{ r['correct'] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <div class="result-buttons">
+      <a href="/">🔙 На головну</a>
+    </div>
+  </div>
+  {% elif Main_Project == "word_test_setup" %}
+    <div class="main">
+      <div class="sidebar">
+        <div>
+          <a href="/">🔙На головну</a>
+        </div>
+        <div class="sidebar-footer">
+          <p class="bottom">© 2025.</p>
+          <p class="bottom1">Place of Progres.</p>
+          <p class="bottom2">Version 1.0</p>
+        </div>
+      </div>
+      <h2>🧠 Словниковий тест</h2>
+      <form method="POST">
+        <label for="num_questions">Кількість запитань:</label><br>
+        <input type="number" name="num_questions" min="1" value="5" required><br><br>
+        <button type="submit">▶️ Почати тест</button>
+      </form>
+    </div>
+  {% elif Main_Project == "math_test_result" %}
+    <div class="main">
+      <div class="sidebar">
+        <div>
+          <a href="/">🔙На головну</a>
+        </div>
+        <div class="sidebar-footer">
+          <p class="bottom">© 2025.</p>
+          <p class="bottom1">Place of Progres.</p>
+          <p class="bottom2">Version 1.0</p>
+        </div>
+      </div>
+      <h2>Результати мат. тесту: {{ score }}/{{ total }}</h2>
+      <table class="result-table">
+        <tr>
+          <th>#</th>
+          <th>Запитання</th>
+          <th>Ваша відповідь</th>
+          <th>Правильна відповідь</th>
+        </tr>
+        {% for r in results %}
+        <tr class="{% if r['user'] == r['correct'] %}correct{% else %}incorrect{% endif %}">
+          <td>{{ loop.index }}</td>
+          <td>{{ r['question'] }}</td>
+          <td>{{ r['user'] }}</td>
+          <td>{{ r['correct'] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      <div class="result-buttons">
+        <a href="/">🔙 На головну</a>
+        <a href="/mathtest">🔁 Повторити</a>
+      </div>
+    </div>
+  {% endif %}
+</body>
+</html>
